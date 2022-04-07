@@ -1,21 +1,24 @@
-import React from 'react'
-
 import { useQuery } from 'react-query'
 
 import classes from './Users.module.css'
 
 export type User = {
     email: string
+    first_name: string
+    last_name: string
 }
 
 function Users() {
     const { data } = useQuery<unknown, unknown, User[]>('users', () =>
-        fetch('http://locahost:3000/users'),
+        fetch('http://localhost:3000/users').then(res =>
+            res.json()
+        ),
     )
+
     return (
         <ul className={classes.userList}>
             {data?.map((user) => (
-                <li>{user.email}</li>
+                <li key={user.email}>{user.email}</li>
             ))}
         </ul>
     )

@@ -4,14 +4,16 @@ import { User } from '../Users/Users'
 import { AuthContext, AuthContextType } from './AuthContext'
 
 function login(email: string): Promise<User> {
-    return new Promise((r) => r({ email }))
+    return new Promise((r) =>
+        r({ email, first_name: 'anon', last_name: 'ymous' }),
+    )
 }
 
 function logout(): Promise<void> {
     return new Promise((r) => r())
 }
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export const AuthProvider: React.FC = ({ children }) => {
     const [user, setUser] = React.useState<User | null>(null)
 
     const value: AuthContextType = {

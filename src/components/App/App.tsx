@@ -1,34 +1,53 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
-import ProtectedRoute from '../ProtectedRoute'
-import Users from '../Users'
+import { Routes, Route, Link, Outlet } from 'react-router-dom'
 
+import { Login } from '../Auth/Login'
+import { ProtectedRoute, RedirectIfLoggedIn, Status } from '../Auth'
+import Users from '../Users'
 import classes from './App.module.css'
 
-function App() {
+const App = () => {
     return (
-        <Router>
-            <div>
-                <nav className={classes.nav}>
-                    <ul>
-                        <li>
-                            <Link to="/login">Log in</Link>
-                        </li>
-                        <li>
-                            <Link to="/users">Users</Link>
-                        </li>
-                    </ul>
-                </nav>
+        <Routes>
+            <Route element={<Layout />}>
+                <Route
+                    path="/"
+                    element={
+                        <ProtectedRoute>
+                            <Users />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/login"
+                    element={
+                        <RedirectIfLoggedIn>
+                            <Login />
+                        </RedirectIfLoggedIn>
+                    }
+                />
+            </Route>
+        </Routes>
+    )
+}
 
-                <Routes>
-                    <Route path="/users">
-                        <Users />
-                    </Route>
-                    <Route path="/login">
-                        <ProtectedRoute />
-                    </Route>
-                </Routes>
-            </div>
-        </Router>
+const Layout = () => {
+    return (
+        <div>
+            <Status />
+
+            <nav className={classes.nav}>
+                <ul>
+                    <li>
+                        <Link to="/login">Log in</Link>
+                    </li>
+                    <li>
+                        <Link to="/">Users</Link>
+                    </li>
+                </ul>
+            </nav>
+
+            <Outlet />
+        </div>
     )
 }
 
