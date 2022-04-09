@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { Box, TextField, Button, Alert, FormGroup } from '@mui/material'
 
-import './Login.css'
 import { useAuth } from './'
 
 type LoginProps = {
@@ -10,38 +9,42 @@ type LoginProps = {
 }
 
 export const Login: React.FC<LoginProps> = ({}) => {
+    const [error, setError] = useState<string | null>(null)
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
     const navigate = useNavigate()
     const location = useLocation()
     const auth = useAuth()
 
     const from = (location.state as any)?.from?.pathname || '/'
 
-    async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault()
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+        e.preventDefault()
 
-        const formData = new FormData(event.currentTarget)
-        const email = formData.get('email') as string
-
-        auth.login(email)
-
-        // Send them back to the page they tried to visit when they were
-        // redirected to the login page. Use { replace: true } so we don't create
-        // another entry in the history stack for the login page.  This means that
-        // when they get to the protected page and click the back button, they
-        // won't end up back on the login page, which is also really nice for the
-        // user experience.
-        navigate(from, { replace: true })
+        if (await auth.login(email, password)) {
+            setError(null)
+            // Send them back to the page they tried to visit when they were
+            // redirected to the login page. Use { replace: true } so we don't create
+            // another entry in the history stack for the login page.  This means that
+            // when they get to the protected page and click the back button, they
+            // won't end up back on the login page, which is also really nice for the
+            // user experience.
+            navigate(from, { replace: true })
+        } else {
+            setError('Invalid credentials')
+            setPassword('')
+        }
     }
 
     return (
         <div>
-            {from && (
+            {from !== '/' && (
                 <Alert severity="info">
                     You must log in to view the page at {from}
                 </Alert>
             )}
             <Box
-                noValidate
                 component="form"
                 autoComplete="off"
                 onSubmit={handleSubmit}
@@ -57,6 +60,11 @@ export const Login: React.FC<LoginProps> = ({}) => {
                         label="Email"
                         className="text"
                         autoComplete="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.currentTarget.value)}
+                        error={!!error}
+                        helperText={error}
+                        margin="normal"
                         required
                     />
                 </FormGroup>
@@ -67,12 +75,19 @@ export const Login: React.FC<LoginProps> = ({}) => {
                         type="password"
                         className="text"
                         autoComplete="current-password"
+                        value={password}
+                        error={!!error}
+                        margin="normal"
+                        onChange={(e) => setPassword(e.currentTarget.value)}
                         required
                     />
                 </FormGroup>
-                <Button type="submit" variant="contained" size="large">
-                    Login
-                </Button>
+                <Box sx={{ display: 'flex' }}>
+                    <Box component="div" sx={{ flexGrow: 1 }} />
+                    <Button type="submit" variant="contained" size="large">
+                        Login
+                    </Button>
+                </Box>
             </Box>
         </div>
     )

@@ -24,7 +24,7 @@ export const Status: React.FC<StatusProps> = ({}) => {
         null,
     )
 
-    if (!auth.user) {
+    if (!auth.accessToken) {
         return null
     }
 
@@ -32,7 +32,8 @@ export const Status: React.FC<StatusProps> = ({}) => {
         setAnchorElUser(event.currentTarget)
     }
 
-    const handleCloseUserMenu = () => {
+    const handleCloseUserMenu = async () => {
+        await auth.logout()
         setAnchorElUser(null)
     }
 

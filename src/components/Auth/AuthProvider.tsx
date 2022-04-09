@@ -1,12 +1,26 @@
 import React from 'react'
-import { User } from '../Users/Users'
 
 import { AuthContext, AuthContextType } from './AuthContext'
 
-function login(email: string): Promise<User> {
-    return new Promise((r) =>
-        r({ email, first_name: 'anon', last_name: 'ymous' }),
-    )
+async function login(email: string, password: string): Promise<string> {
+    const response = await fetch('http://localhost:3000/auth/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            username: email,
+            password,
+        }),
+    })
+
+    if (!response.ok) {
+        throw Error('Login failed')
+    }
+
+    const json = await response.json()
+
+    return json.access_token
 }
 
 function logout(): Promise<void> {
@@ -14,18 +28,24 @@ function logout(): Promise<void> {
 }
 
 export const AuthProvider: React.FC = ({ children }) => {
-    const [user, setUser] = React.useState<User | null>(null)
+    const [accessToken, setAccessToken] = React.useState<string | null>(null)
 
     const value: AuthContextType = {
-        user,
-        login: async (email: string) => {
-            setUser(null)
-            const user = await login(email)
-            setUser(user)
+        accessToken,
+        login: async (email: string, password: string) => {
+            setAccessToken(null)
+            try {
+                const responseAccessToken = await login(email, password)
+                setAccessToken(responseAccessToken)
+                return true
+            } catch (err) {
+                console.error('Login failed')
+                return false
+            }
         },
         logout: async () => {
             await logout()
-            setUser(null)
+            setAccessToken(null)
         },
     }
 

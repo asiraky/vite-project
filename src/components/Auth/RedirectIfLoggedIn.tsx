@@ -12,7 +12,7 @@ export const RedirectIfLoggedIn: React.FC<RedirectIfLoggedInProps> = ({
 }) => {
     const auth = useAuth()
 
-    if (auth.user) {
+    if (auth.accessToken) {
         return <Navigate to="/" replace />
     }
 

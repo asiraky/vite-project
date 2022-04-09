@@ -1,16 +1,25 @@
-import { Routes, Route, Outlet, useNavigate } from 'react-router-dom'
+import {
+    Routes,
+    Route,
+    Outlet,
+    useNavigate,
+    useResolvedPath,
+} from 'react-router-dom'
 import { AppBar, Box, Toolbar, Button, Container } from '@mui/material'
 
+import { ProtectedRoute, RedirectIfLoggedIn, Status, useAuth } from '../Auth'
 import { Users } from '../Users'
 import { Login } from '../Auth'
-import { ProtectedRoute, RedirectIfLoggedIn, Status } from '../Auth'
+import { Home } from '../Home'
+import { Link } from '../Link'
 
-const App = () => {
+export const App = () => {
     return (
         <Routes>
             <Route element={<Layout />}>
+                <Route path="/" element={<Home />} />
                 <Route
-                    path="/"
+                    path="/users"
                     element={
                         <ProtectedRoute>
                             <Users />
@@ -32,20 +41,20 @@ const App = () => {
 
 const Layout = () => {
     const navigate = useNavigate()
+    const auth = useAuth()
+
     return (
         <>
             <Box sx={{ flexGrow: 1 }}>
                 <AppBar position="sticky">
                     <Toolbar>
-                        <Button
-                            onClick={() => navigate('/login')}
-                            color="inherit"
-                        >
-                            Login
-                        </Button>
-                        <Button onClick={() => navigate('/')} color="inherit">
-                            Users
-                        </Button>
+                        <Link to="/">Home</Link>
+                        {!auth.accessToken && (
+                            <Link marginLeft={1} to="/login">Login</Link>
+                        )}
+                        {!!auth.accessToken && (
+                            <Link marginLeft={1} to="/users">Users</Link>
+                        )}
                         <Box sx={{ flexGrow: 1 }} />
                         <Status />
                     </Toolbar>
@@ -57,5 +66,3 @@ const Layout = () => {
         </>
     )
 }
-
-export default App
