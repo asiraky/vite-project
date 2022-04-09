@@ -1,6 +1,8 @@
 import React from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { Box, TextField, Button, Alert, FormGroup } from '@mui/material'
 
+import './Login.css'
 import { useAuth } from './'
 
 type LoginProps = {
@@ -33,14 +35,45 @@ export const Login: React.FC<LoginProps> = ({}) => {
 
     return (
         <div>
-            <p>You must log in to view the page at {from}</p>
-
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Email: <input name="email" type="text" />
-                </label>{' '}
-                <button type="submit">Login</button>
-            </form>
+            {from && (
+                <Alert severity="info">
+                    You must log in to view the page at {from}
+                </Alert>
+            )}
+            <Box
+                noValidate
+                component="form"
+                autoComplete="off"
+                onSubmit={handleSubmit}
+                sx={{
+                    marginTop: '15px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                }}
+            >
+                <FormGroup>
+                    <TextField
+                        name="email"
+                        label="Email"
+                        className="text"
+                        autoComplete="email"
+                        required
+                    />
+                </FormGroup>
+                <FormGroup>
+                    <TextField
+                        name="password"
+                        label="Password"
+                        type="password"
+                        className="text"
+                        autoComplete="current-password"
+                        required
+                    />
+                </FormGroup>
+                <Button type="submit" variant="contained" size="large">
+                    Login
+                </Button>
+            </Box>
         </div>
     )
 }

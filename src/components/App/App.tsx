@@ -1,9 +1,9 @@
-import { Routes, Route, Link, Outlet } from 'react-router-dom'
+import { Routes, Route, Outlet, useNavigate } from 'react-router-dom'
+import { AppBar, Box, Toolbar, Button, Container } from '@mui/material'
 
-import { Login } from '../Auth/Login'
+import { Users } from '../Users'
+import { Login } from '../Auth'
 import { ProtectedRoute, RedirectIfLoggedIn, Status } from '../Auth'
-import Users from '../Users'
-import classes from './App.module.css'
 
 const App = () => {
     return (
@@ -31,23 +31,30 @@ const App = () => {
 }
 
 const Layout = () => {
+    const navigate = useNavigate()
     return (
-        <div>
-            <Status />
-
-            <nav className={classes.nav}>
-                <ul>
-                    <li>
-                        <Link to="/login">Log in</Link>
-                    </li>
-                    <li>
-                        <Link to="/">Users</Link>
-                    </li>
-                </ul>
-            </nav>
-
-            <Outlet />
-        </div>
+        <>
+            <Box sx={{ flexGrow: 1 }}>
+                <AppBar position="sticky">
+                    <Toolbar>
+                        <Button
+                            onClick={() => navigate('/login')}
+                            color="inherit"
+                        >
+                            Login
+                        </Button>
+                        <Button onClick={() => navigate('/')} color="inherit">
+                            Users
+                        </Button>
+                        <Box sx={{ flexGrow: 1 }} />
+                        <Status />
+                    </Toolbar>
+                </AppBar>
+                <Container sx={{ paddingTop: '20px' }} maxWidth="sm">
+                    <Outlet />
+                </Container>
+            </Box>
+        </>
     )
 }
 

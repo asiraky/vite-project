@@ -8,11 +8,9 @@ export type User = {
     last_name: string
 }
 
-function Users() {
+export const Users = () => {
     const { data } = useQuery<unknown, unknown, User[]>('users', () =>
-        fetch('http://localhost:3000/users').then(res =>
-            res.json()
-        ),
+        fetch('http://localhost:3000/users').then((res) => res.json()),
     )
 
     return (
@@ -23,5 +21,3 @@ function Users() {
         </ul>
     )
 }
-
-export default Users
