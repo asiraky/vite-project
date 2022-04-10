@@ -6,6 +6,7 @@ export type User = {
     email: string
     first_name: string
     last_name: string
+    is_admin: boolean
 }
 
 export const Users = () => {
@@ -16,7 +17,7 @@ export const Users = () => {
     return (
         <ul className={classes.userList}>
             {data?.map((user) => (
-                <li key={user.email}>{user.email}</li>
+                <li key={user.email}>{user.first_name} {user.last_name} ({!user.is_admin && 'not an '}admin)</li>
             ))}
         </ul>
     )

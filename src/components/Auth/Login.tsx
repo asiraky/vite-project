@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Box, TextField, Button, Alert, FormGroup } from '@mui/material'
+import { Container, Box, TextField, Button, Alert, FormGroup } from '@mui/material'
 
 import { useAuth } from './'
 
@@ -33,7 +33,6 @@ export const Login: React.FC<LoginProps> = ({}) => {
             navigate(from, { replace: true })
         } else {
             setError('Invalid credentials')
-            setPassword('')
         }
     }
 
@@ -44,7 +43,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
                     You must log in to view the page at {from}
                 </Alert>
             )}
-            <Box
+            <Container
                 component="form"
                 autoComplete="off"
                 onSubmit={handleSubmit}
@@ -52,6 +51,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
                     marginTop: '15px',
                     display: 'flex',
                     flexDirection: 'column',
+                    maxWidth: 600
                 }}
             >
                 <FormGroup>
@@ -88,7 +88,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
                         Login
                     </Button>
                 </Box>
-            </Box>
+            </Container>
         </div>
     )
 }

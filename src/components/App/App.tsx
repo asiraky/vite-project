@@ -40,7 +40,6 @@ export const App = () => {
 }
 
 const Layout = () => {
-    const navigate = useNavigate()
     const auth = useAuth()
 
     return (
@@ -48,18 +47,35 @@ const Layout = () => {
             <Box sx={{ flexGrow: 1 }}>
                 <AppBar position="sticky">
                     <Toolbar>
-                        <Link to="/">Home</Link>
+                        <Link 
+                            underline="none"
+                            to="/"
+                        >
+                            Home
+                        </Link>
                         {!auth.accessToken && (
-                            <Link marginLeft={1} to="/login">Login</Link>
+                            <Link 
+                                underline="none"
+                                marginLeft={1} 
+                                to="/login"
+                            >
+                                Login
+                            </Link>
                         )}
                         {!!auth.accessToken && (
-                            <Link marginLeft={1} to="/users">Users</Link>
+                            <Link 
+                                underline="none" 
+                                marginLeft={1} 
+                                to="/users"
+                            >
+                                Users
+                            </Link>
                         )}
                         <Box sx={{ flexGrow: 1 }} />
                         <Status />
                     </Toolbar>
                 </AppBar>
-                <Container sx={{ paddingTop: '20px' }} maxWidth="sm">
+                <Container sx={{ paddingTop: '20px' }}>
                     <Outlet />
                 </Container>
             </Box>
