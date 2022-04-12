@@ -1,11 +1,5 @@
-import {
-    Routes,
-    Route,
-    Outlet,
-    useNavigate,
-    useResolvedPath,
-} from 'react-router-dom'
-import { AppBar, Box, Toolbar, Button, Container } from '@mui/material'
+import { Routes, Route, Outlet } from 'react-router-dom'
+import { AppBar, Box, Toolbar, Container } from '@mui/material'
 
 import { ProtectedRoute, RedirectIfLoggedIn, Status, useAuth } from '../Auth'
 import { Users } from '../Users'
@@ -47,27 +41,16 @@ const Layout = () => {
             <Box sx={{ flexGrow: 1 }}>
                 <AppBar position="sticky">
                     <Toolbar>
-                        <Link 
-                            underline="none"
-                            to="/"
-                        >
+                        <Link underline="none" to="/">
                             Home
                         </Link>
                         {!auth.accessToken && (
-                            <Link 
-                                underline="none"
-                                marginLeft={1} 
-                                to="/login"
-                            >
+                            <Link underline="none" marginLeft={1} to="/login">
                                 Login
                             </Link>
                         )}
                         {!!auth.accessToken && (
-                            <Link 
-                                underline="none" 
-                                marginLeft={1} 
-                                to="/users"
-                            >
+                            <Link underline="none" marginLeft={1} to="/users">
                                 Users
                             </Link>
                         )}
