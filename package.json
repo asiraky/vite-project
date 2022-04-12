@@ -9,11 +9,13 @@
     "lint": "eslint --ext js,ts,tsx src --fix"
   },
   "dependencies": {
+    "@casl/ability": "^5.4.3",
+    "@casl/react": "^2.3.0",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@mui/icons-material": "^5.6.0",
     "@mui/material": "^5.6.0",
-    "autoprefixer": "^10.4.4",
+    "@mui/x-data-grid": "^5.8.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-query": "^3.34.19",
@@ -25,6 +27,7 @@
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",
     "@vitejs/plugin-react": "^1.0.7",
+    "autoprefixer": "^10.4.4",
     "eslint": "^8.0.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",

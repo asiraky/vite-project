@@ -1,6 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
+
+import { User } from '../Users/Users'
 
 import { AuthContext, AuthContextType } from './AuthContext'
+
+async function getUser(accessToken: string): Promise<User> {
+    const response = await fetch('http://localhost:3000/profile', {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+        },
+    })
+
+    if (!response.ok) {
+        throw new Error(response.statusText)
+    }
+
+    return response.json()
+}
 
 async function login(email: string, password: string): Promise<string> {
     const response = await fetch('http://localhost:3000/auth/login', {
@@ -28,14 +44,18 @@ function logout(): Promise<void> {
 }
 
 export const AuthProvider: React.FC = ({ children }) => {
-    const [accessToken, setAccessToken] = React.useState<string | null>(null)
+    const [accessToken, setAccessToken] = useState<string | null>(null)
+    const [user, setUser] = useState<User | null>(null)
 
     const value: AuthContextType = {
+        user,
         accessToken,
         login: async (email: string, password: string) => {
             setAccessToken(null)
             try {
                 const responseAccessToken = await login(email, password)
+                const user = await getUser(responseAccessToken)
+                setUser(user)
                 setAccessToken(responseAccessToken)
                 return true
             } catch (err) {
