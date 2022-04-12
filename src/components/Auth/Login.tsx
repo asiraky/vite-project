@@ -1,6 +1,13 @@
 import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { Container, Box, TextField, Button, Alert, FormGroup } from '@mui/material'
+import {
+    Container,
+    Box,
+    TextField,
+    Button,
+    Alert,
+    FormGroup,
+} from '@mui/material'
 
 import { useAuth } from './'
 
@@ -23,7 +30,6 @@ export const Login: React.FC<LoginProps> = ({}) => {
         e.preventDefault()
 
         if (await auth.login(email, password)) {
-            setError(null)
             // Send them back to the page they tried to visit when they were
             // redirected to the login page. Use { replace: true } so we don't create
             // another entry in the history stack for the login page.  This means that
@@ -51,7 +57,7 @@ export const Login: React.FC<LoginProps> = ({}) => {
                     marginTop: '15px',
                     display: 'flex',
                     flexDirection: 'column',
-                    maxWidth: 600
+                    maxWidth: 600,
                 }}
             >
                 <FormGroup>
